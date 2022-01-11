@@ -6,16 +6,10 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // get all products
 router.get('/', async (req, res) => {
   Product.findAll({
-    attributes: ['id', 'product_name', 'price', 'stock', 'categotry_id'],
-    include: [
-      {
-        model: Category,
-        attributes: ['id', 'category_name'],
-      },
+    include: [Category,
       {
         model: Tag,
         through: ProductTag,
-        as: 'tags',
       },
     ],
   }).then((productData) => res.json(productData))
@@ -30,28 +24,18 @@ router.get('/:id', async (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
   Product.findOne({
-    where: {
-      id: req.params.id,
-    },
+    where: { id: req.params.id},
     include: [
       {
         model: Category,
-        attributes: ['id', 'category_name'],
       },
       {
         model: Tag,
         through: ProductTag,
-        as: 'tags',
       },
     ],
   }).then((productData) => {
-    if (!productData) {
-      res.status(404).json({ message: 'Product not found.' })
-      return;
-    }
-    else {
       res.json(productData)
-    }
   }).catch((err) => {
     console.log(err)
     res.status(500).json(err)
@@ -71,7 +55,7 @@ router.post('/', (req, res) => {
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
-      if (req.body.tagIds.length) {
+      if (req.body.tagIds.length && req.body.tagIds) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
           return {
             product_id: product.id,
@@ -94,9 +78,7 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   // update product data
   Product.update(req.body, {
-    where: {
-      id: req.params.id,
-    },
+    where: { id: req.params.id},
   })
     .then((product) => {
       // find all associated tags from ProductTag
@@ -139,13 +121,7 @@ router.delete('/:id', (req, res) => {
       id: req.params.id,
     },
   }).then((productData) =>{
-    if (!productData) {
-      res.status(404).json({ message: 'Product not found.'})
-      return;
-    }
-    else {
       res.json(productData)
-    }
   }).catch((err) => {
     console.log(err)
     res.status(500).json(err)
