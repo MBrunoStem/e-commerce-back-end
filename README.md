@@ -21,15 +21,16 @@ THEN I am able to successfully create, update, and delete data in my database
 ## Technologies Used
 * Javascipt
 * Node
+* Express
+* Sequelize
 * SQL
 
 ## License
 The MIT License is a permissive free software license originating at the Massachusetts Institute of Technology (MIT) in the late 1980s. As a permissive license, it puts only very limited restriction on reuse and has, therefore, high license compatibility.
 
-## Deployed Site
-
-
 ## Video Demo
+[Part 1](https://watch.screencastify.com/v/7GvRnazyeNPAArCASk0Z)
+[Part 2](https://watch.screencastify.com/v/75o6mkpfJ6tX9YQg1U0l)
 
 ## Contributors
 Mario Bruno
